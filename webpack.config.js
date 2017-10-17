@@ -3,7 +3,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const webpack = require('webpack');
 
 const extractSass = new ExtractTextPlugin({
-  filename: "[name].[hash:6].css",
+  filename: "[name].css",
   disable: process.env.NODE_ENV === "development"
 });
 
@@ -16,7 +16,7 @@ module.exports = {
     layout: path.resolve(__dirname, 'assets', 'js', 'layout.js')
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'public', 'dist'),
     filename: "[name].js",
     publicPath: 'dist'
   },
@@ -38,7 +38,9 @@ module.exports = {
           use: [{
             loader: "css-loader"
           }, {
-            loader: "sass-loader"
+            loader: "resolve-url-loader"
+          }, {
+            loader: "sass-loader?sourceMap"
           }],
           // use style-loader in development
           fallback: "style-loader"
