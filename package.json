@@ -1,0 +1,16 @@
+{
+  "name": "angelmarques",
+  "version": "1.0.0",
+  "description": "Personal portfolio and resume",
+  "main": "app.js",
+  "repository": "https://github.com/G89Angel/angelmarques.git",
+  "author": "Angel Manuel Marques Ruiz <g89.angel@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "jquery": "^3.2.1",
+    "webpack": "^3.8.1"
+  }
+}
