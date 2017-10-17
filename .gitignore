@@ -109,3 +109,5 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+# This folder can be generated running webpack
+/dist/
