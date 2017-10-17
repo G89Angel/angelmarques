@@ -7,6 +7,9 @@ const extractSass = new ExtractTextPlugin({
   disable: process.env.NODE_ENV === "development"
 });
 
+
+const fileHash = '[name].[hash:6].[ext]';
+
 module.exports = {
   entry: {
     styles: path.resolve(__dirname, 'assets', 'css', 'base.scss'),
@@ -47,7 +50,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[hash:6].[ext]'
+              name: fileHash
             }
           }
         ]
@@ -57,7 +60,7 @@ module.exports = {
         {
           loader: "url-loader?limit=10000&mimetype=application/font-woff",
           options: {
-            name: '[name].[hash:6].[ext]'
+            name: fileHash
           }
         }
       ]
@@ -67,7 +70,7 @@ module.exports = {
         use: [{
           loader: "file-loader",
           options: {
-            name: '[name].[hash:6].[ext]'
+            name: fileHash
           }
         }]
       }
