@@ -10,6 +10,35 @@ const extractSass = new ExtractTextPlugin({
 
 const fileHash = '[name].[hash:6].[ext]';
 
+const styleLoader = {
+  loader: 'style-loader',
+  options: {
+    sourceMap: true
+  }
+};
+
+const cssLoader = {
+  loader: 'css-loader',
+  options: {
+    sourceMap: true
+  }
+};
+
+const sassLoader = {
+  loader: 'sass-loader',
+  options: {
+    sourceMap: true
+  }
+};
+
+const resolveUrlLoader = {
+  loader: "resolve-url-loader",
+  options: {
+    sourceMap: true
+  }
+}
+
+
 module.exports = {
   entry: {
     styles: path.resolve(__dirname, 'assets', 'css', 'base.scss'),
@@ -33,17 +62,18 @@ module.exports = {
         }
       },
       {
+        test: /\.css$/,
+        use: [
+          styleLoader,
+          cssLoader
+        ]
+      },
+      {
         test: /\.scss$/,
         use: extractSass.extract({
-          use: [{
-            loader: "css-loader"
-          }, {
-            loader: "resolve-url-loader"
-          }, {
-            loader: "sass-loader?sourceMap"
-          }],
+          use: [cssLoader, resolveUrlLoader, sassLoader],
           // use style-loader in development
-          fallback: "style-loader"
+          fallback: styleLoader
         })
       },
       {
@@ -86,5 +116,6 @@ module.exports = {
       Popper: ['popper.js', 'default']
     }),
     extractSass
-  ]
+  ],
+  devtool: 'inline-source-map'
 };
