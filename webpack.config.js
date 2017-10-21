@@ -36,22 +36,24 @@ const resolveUrlLoader = {
   options: {
     sourceMap: true
   }
-}
+};
 
+const useDevServer = false;
+const publicPath = useDevServer ? 'http://localhost:8080/dist/' : 'dist';
 
 module.exports = {
   entry: {
     styles: path.resolve(__dirname, 'assets', 'css', 'base.scss'),
-    layout: path.resolve(__dirname, 'assets', 'js', 'layout.js')
+    layout: path.resolve(__dirname, 'assets', 'js', 'layout.js'),
+    app: path.resolve(__dirname, 'assets', 'js', 'app.js'),
   },
   output: {
     path: path.resolve(__dirname, 'public', 'dist'),
     filename: "[name].js",
-    publicPath: 'dist'
+    publicPath: publicPath
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
@@ -71,31 +73,32 @@ module.exports = {
       {
         test: /\.scss$/,
         use: extractSass.extract({
-          use: [cssLoader, resolveUrlLoader, sassLoader],
+          use: [
+            cssLoader,
+            resolveUrlLoader,
+            sassLoader
+          ],
           // use style-loader in development
           fallback: styleLoader
         })
       },
       {
         test: /\.(png|jpg|jpeg|gif|ico|svg)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: fileHash
-            }
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: fileHash
           }
-        ]
+        }]
       },
       {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, use: [
-        {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [{
           loader: "url-loader?limit=10000&mimetype=application/font-woff",
           options: {
             name: fileHash
           }
-        }
-      ]
+        }]
       },
       {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -115,7 +118,21 @@ module.exports = {
       'window.jQuery': 'jquery',
       Popper: ['popper.js', 'default']
     }),
-    extractSass
+    extractSass,
+    new webpack.optimize.CommonsChunkPlugin({
+      name: [
+        'layout',
+        // dumps the manifest in different file
+        'manifest'
+      ],
+      minChunks: Infinity
+    })
   ],
-  devtool: 'inline-source-map'
+  devtool: 'inline-source-map',
+  devServer: {
+    contentBase: './public',
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    }
+  }
 };
